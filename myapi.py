@@ -9,10 +9,17 @@ app = FastAPI()
 STUDENT_ID_DESCRIPTION = "L'id de l'étudiant que vous recherchez"
 STUDENT_ID_CONSTRAINTS = {'ge': 1, 'le': max(students.keys())}
 
+
 class Student(BaseModel):
     name: str
     lastname: str
     age: int
+
+
+class UpdateStudent(BaseModel):
+    name: Optional[str] = None
+    lastname: Optional[str] = None
+    age: Optional[int] = None
 
 
 @app.get("/")
@@ -60,6 +67,24 @@ def create_student(student: Student):
     new_id = max(students.keys()) + 1
     students[new_id] = student
     return students[new_id]
+
+
+@app.put("/students/{student_id}/update")
+def update_student(student_id: int, student: UpdateStudent):
+    # utiliser model_dump pour une representation dictionnaire de l'objet
+    if student_id in students:
+        for key, value in student.model_dump().items():
+            if value is not None:
+                students[student_id][key] = value
+        return students[student_id]
+    return {"error": f"L'ID {student_id} n'existe pas."}
+
+
+@app.delete("/students/{student_id}/delete")
+def delete_student(student_id: int):
+    if student_id in students:
+        del students[student_id]
+        return {"status": "Deleted successfully"}
 
 
 def filter_students_by_name(name: str):
