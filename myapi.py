@@ -2,6 +2,7 @@ from typing import Optional
 from fastapi import FastAPI, Path
 from datas import students
 from pydantic import BaseModel
+import  uvicorn
 
 app = FastAPI()
 
@@ -90,3 +91,8 @@ def delete_student(student_id: int):
 def filter_students_by_name(name: str):
     """Filtre les étudiants par nom."""
     return [student for student in students.values() if student['name'] == name]
+
+
+# Pour le débogage
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=9000)
