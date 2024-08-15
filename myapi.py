@@ -3,14 +3,13 @@ from fastapi import FastAPI, Path
 from datas import students
 from pydantic import BaseModel
 from students.schemas import Student
-import  uvicorn
+import uvicorn
 
 app = FastAPI()
 
 # Extraction de constante pour les contraintes des IDs d'étudiants
 STUDENT_ID_DESCRIPTION = "L'id de l'étudiant que vous recherchez"
 STUDENT_ID_CONSTRAINTS = {'ge': 1, 'le': max(students.keys())}
-
 
 
 class UpdateStudent(BaseModel):
