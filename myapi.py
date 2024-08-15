@@ -2,6 +2,7 @@ from typing import Optional
 from fastapi import FastAPI, Path
 from datas import students
 from pydantic import BaseModel
+from students.schemas import Student
 import  uvicorn
 
 app = FastAPI()
@@ -10,11 +11,6 @@ app = FastAPI()
 STUDENT_ID_DESCRIPTION = "L'id de l'étudiant que vous recherchez"
 STUDENT_ID_CONSTRAINTS = {'ge': 1, 'le': max(students.keys())}
 
-
-class Student(BaseModel):
-    name: str
-    lastname: str
-    age: int
 
 
 class UpdateStudent(BaseModel):
